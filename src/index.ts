@@ -4,7 +4,7 @@ import { CurrenciesType } from './types';
 
 export { CurrenciesType };
 
-export interface ICreateParams {
+export interface IMerchantCreateParams {
   vendor: string;
   invoice: string | number;
   secret: string;
@@ -20,9 +20,32 @@ export interface ICreateError {
   message: string;
 }
 
-export interface ICreateSuccess {
+export interface IMerchantCreateSuccess {
   status: 'success';
   url: string;
+}
+
+export interface ICreate {
+  method: 'btc' | 'ltc' | 'zec' | 'bch' | 'xmr';
+  receivingAddress: string;
+  callbackUrl?: string;
+}
+
+export interface ICreateSuccess {
+  callback_url: string;
+  address: string;
+  destination: string;
+  fee: number;
+  status: 'success';
+}
+
+export interface ICheckSuccess {
+  address: string;
+  amount: string;
+  confirmations: number;
+  // TODO: fix type
+  txids: unknown[];
+  status: 'success';
 }
 
 export class Litepay {
@@ -36,11 +59,77 @@ export class Litepay {
     return params;
   }
 
-  public static async merchantCreate(data: ICreateParams) {
+  /**
+   * {@link https://litepay.ch/docs/merchant_api/#generating-invoices}
+   */
+  public static async merchantCreate(data: IMerchantCreateParams) {
     try {
-      const res = await axios.post<ICreateError | ICreateSuccess>(
+      const res = await axios.post<ICreateError | IMerchantCreateSuccess>(
         'https://litepay.ch/p/',
         this.encodeData(data),
+      );
+
+      return res.data;
+    } catch (error) {
+      const thisError = error as AxiosError;
+
+      if (axios.isAxiosError(thisError) === true) {
+        return thisError.response?.data as ICreateError;
+      }
+
+      throw thisError;
+    }
+  }
+
+  /**
+   * {@link https://litepay.ch/docs/crypto_payment_api/#requesting}
+   */
+  public static async create(options: ICreate) {
+    try {
+      const paramsObj = {
+        method: options.method,
+        address: options.receivingAddress,
+        callback: options.callbackUrl,
+      };
+
+      if (options.callbackUrl === undefined) {
+        delete paramsObj.callback;
+      }
+
+      const query = this.encodeData(paramsObj).toString();
+
+      const res = await axios.get<ICreateError | ICreateSuccess>(
+        `https://litepay.ch/api/receive?${query}`,
+      );
+
+      return res.data;
+    } catch (error) {
+      const thisError = error as AxiosError;
+
+      if (axios.isAxiosError(thisError) === true) {
+        return thisError.response?.data as ICreateError;
+      }
+
+      throw thisError;
+    }
+  }
+
+  /**
+   * {@link https://litepay.ch/docs/crypto_payment_api/#requesting:~:text=on%20the%20spot.-,NOTE,-%2D%20if%20you%20are}
+   */
+  public static async check(
+    data: Pick<ICreate, 'method' | 'receivingAddress'>,
+  ) {
+    try {
+      const paramsObj = {
+        method: data.method,
+        address: data.receivingAddress,
+      };
+
+      const query = this.encodeData(paramsObj).toString();
+
+      const res = await axios.get<ICreateError | ICheckSuccess>(
+        `https://litepay.ch/api/check?${query}`,
       );
 
       return res.data;
