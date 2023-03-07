@@ -118,12 +118,12 @@ export class Litepay {
    * {@link https://litepay.ch/docs/crypto_payment_api/#requesting:~:text=on%20the%20spot.-,NOTE,-%2D%20if%20you%20are}
    */
   public static async check(
-    data: Pick<ICreate, 'method' | 'receivingAddress'>,
+    data: Pick<ICreate, 'method'> & Pick<ICreateSuccess, 'address'>,
   ) {
     try {
       const paramsObj = {
         method: data.method,
-        address: data.receivingAddress,
+        address: data.address,
       };
 
       const query = this.encodeData(paramsObj).toString();

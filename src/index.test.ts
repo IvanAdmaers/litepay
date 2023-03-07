@@ -72,7 +72,7 @@ describe('Litepay', () => {
   it('should not check an invoice', async () => {
     const invoice = await Litepay.check({
       method: 'btc',
-      receivingAddress: 'error',
+      address: 'error',
     });
 
     expect(invoice.status === 'error').toBe(true);
@@ -92,7 +92,7 @@ it('should check an invoice', async () => {
 
   const invoiceData = await Litepay.check({
     method: 'btc',
-    receivingAddress: invoice.destination,
+    address: invoice.address,
   });
 
   expect(hasOwn(invoiceData, 'address')).toBe(true);
