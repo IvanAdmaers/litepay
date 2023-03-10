@@ -1,6 +1,24 @@
 # Litepay
 
+<div align="center">
+  <a href="https://www.npmjs.com/package/litepay">
+    <img alt="npm version" src="https://img.shields.io/npm/v/litepay" />
+  </a>
+  <a href="https://www.npmjs.com/package/litepay">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/litepay" />
+  </a>
+    <a href="https://www.npmjs.com/package/litepay">
+    <img alt="license" src="https://img.shields.io/npm/l/litepay" />
+  </a>
+</div>
+
 Litepay.ch API wrapper.
+
+<div align="center">
+  <a href="https://github.com/IvanAdmaers/litepay">
+    <img src="https://litepay.ch/assets/new/img/logo_litepay_2020_white_small.png" alt="Litepay logo" />
+  </a>
+</div>
 
 ## Usage
 
