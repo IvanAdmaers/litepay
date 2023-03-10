@@ -43,8 +43,7 @@ export interface ICheckSuccess {
   address: string;
   amount: string;
   confirmations: number;
-  // TODO: fix type
-  txids: unknown[];
+  txids: string[];
   status: 'success';
 }
 
