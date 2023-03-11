@@ -1,8 +1,9 @@
 import axios, { AxiosError } from 'axios';
 
-import { CurrenciesType } from './types';
+import packageJson from '../package.json';
+import type { CurrenciesType } from './types';
 
-export { CurrenciesType };
+export const { version } = packageJson;
 
 export interface IMerchantCreateParams {
   vendor: string;
@@ -143,3 +144,5 @@ export class Litepay {
     }
   }
 }
+
+export { CurrenciesType };

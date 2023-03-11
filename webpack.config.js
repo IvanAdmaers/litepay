@@ -1,5 +1,4 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -7,8 +6,6 @@ const mode = isProduction ? 'production' : 'development';
 
 module.exports = {
   mode,
-  target: 'node',
-  externals: [nodeExternals()],
   entry: path.join(__dirname, 'src', 'index.ts'),
   output: {
     path: path.join(__dirname, '/dist'),
@@ -32,9 +29,5 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts'],
-    fallback: {
-      url: false,
-      'form-data': false,
-    },
   },
 };
