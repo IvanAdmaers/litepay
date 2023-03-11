@@ -1,9 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-import packageJson from '../package.json';
 import type { CurrenciesType } from './types';
-
-export const { version } = packageJson;
 
 export interface IMerchantCreateParams {
   vendor: string;
